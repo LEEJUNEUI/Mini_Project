@@ -2,25 +2,31 @@ package Wine;
 
 //1. 개별 조회( 국가 입력 ->품종 -> 레드,화이트 -> 가격대 입력->출력)
 //2. 국가별 와인 특징 (프랑스, 이탈리아, 미국, 칠레)
-//3. 국가별 최고가, 최저가, 최고평점, 최저평점
+//3. 국가별 최고가, 최저가
 //4. 와인 추가
 //5. 와인 삭제
 //6. 종료
 public class Wine {
 	
-	private String wineMenu; //와인 메뉴
+	private String wineName; //와인 이름
 	private int winePrice; //와인 가격
 	private String wineExplain; //와인 설명
 	private int wineSales; //와인 판매량
-	private String country;	//국가
-	private String varieties; //품종
-	private String stores; // 판매처
+	private String country;	//와인 생산지
+	private String varieties; //와인 품종
+	private String type; //와인 종류
 	
-	public String getWineMenu() {
-		return wineMenu;
+	public String getType() {
+		return type;
 	}
-	public void setWineMenu(String wineMenu) {
-		this.wineMenu = wineMenu;
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getWineName() {
+		return wineName;
+	}
+	public void setWineName(String wineName) {
+		this.wineName = wineName;
 	}
 	public int getWinePrice() {
 		return winePrice;
@@ -51,11 +57,6 @@ public class Wine {
 	}
 	public void setVarieties(String varieties) {
 		this.varieties = varieties;
-	}
-	public String getStores() {
-		return stores;
-	}
-	public void setStores(String stores) {
-		this.stores = stores;
+
 	}
 }
