@@ -62,10 +62,13 @@ public class ManageMent {
 				switch (selectNo) {
 				case 1:
 					System.out.println("| 1. 회원 조회 | 2. 회원 등록 | 3. 회원 수정 | 4. 회원 삭제 |");
+					break;
 				case 2:
 					System.out.println("| 1. 와인 등록 | 2. 와인 조회 | 3. 와인 판매 | 4. 와인 수정 | 5. 와인 매출 | 6. 와인 삭제 |");
+					break;
 				case 3:
 					System.out.println("| 1. 예약 조회 | 2. 예약 등록 | 3. 예약 변경 | 4. 시간표 변경");
+					break;
 				}
 			}
 		}
@@ -75,4 +78,5 @@ public class ManageMent {
 		System.out.println("입력>");
 		menuNo = Integer.parseInt(scn.nextLine());
 	}
+		
 }

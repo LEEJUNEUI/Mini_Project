@@ -33,6 +33,7 @@ public class MemberManage extends DAO {
 				member.setMemberName(rs.getString("member_name"));
 				member.setMemberTel(rs.getString("member_tel"));
 				member.setMemberGrade(rs.getString("member_grade"));
+				member.setBonusRat(rs.getDouble("bonus_Rat"));
 				member.setRole(rs.getString("role"));
 
 			}
@@ -85,6 +86,7 @@ public class MemberManage extends DAO {
 			member.setMemberName(rs.getString("member_name"));
 			member.setMemberTel(rs.getString("member_tel"));
 			member.setMemberGrade(rs.getString("member_grade"));
+			member.setBonusRat(rs.getDouble("bonus_Rat"));
 			member.setRole(rs.getString("role"));
 		}catch(Exception e) {
 			e.printStackTrace();

@@ -112,21 +112,35 @@ public class WineService {
 			System.out.println("판매 실패");
 		}
 	}
-	
-	// 와인 매출
-		public void calWine() {
-			List<Wine> list = WineDAO.getInstance().getDetailWine();
-			int sum = 0;
-			for (Wine wine : list) {
-				System.out.println("#######################");
-				System.out.println("메뉴 : " + wine.getWineName());
-				System.out.println("판매갯수 : " + wine.getWineSales());
-				System.out.println("판매금액 : " + wine.getWinePrice() * wine.getWineSales());
-				System.out.println("#######################");
-				sum += wine.getWinePrice() * wine.getWineSales();
-			}
-			System.out.println("총 매출액 : " + sum + "원");
+
+	// 와인 수정
+	public void changeWine() {
+		System.out.println("수정할 와인>");
+		String wineName = scn.nextLine();
+		System.out.println("와인 가격 수정>");
+		int winePrice = Integer.parseInt(scn.nextLine());
+		int result = WineDAO.getInstance().changeWine(winePrice);
+		if (result == 1) {
+			System.out.println("수정 완료");
+		} else {
+			System.out.println("수정 실패");
 		}
+	}
+
+	// 와인 매출
+	public void calWine() {
+		List<Wine> list = WineDAO.getInstance().getDetailWine();
+		int sum = 0;
+		for (Wine wine : list) {
+			System.out.println("#######################");
+			System.out.println("메뉴 : " + wine.getWineName());
+			System.out.println("판매갯수 : " + wine.getWineSales());
+			System.out.println("판매금액 : " + wine.getWinePrice() * wine.getWineSales());
+			System.out.println("#######################");
+			sum += wine.getWinePrice() * wine.getWineSales();
+		}
+		System.out.println("총 매출액 : " + sum + "원");
+	}
 
 	// 와인 삭제
 	public void deleteWine() {
