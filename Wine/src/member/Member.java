@@ -7,7 +7,7 @@ public class Member {
 	protected String memberName; // 회원 이름
 	protected String memberTel; // 회원 전화번호
 	protected String memberGrade; // 회원 등급
-	protected double bonusRat; // 적립비율
+	protected double memeber_bonusRat; // 적립비율
 	protected String role; //권한 1 : 관리자, 0 : 사용자
 	int bonusPoint; // 보너스포인트
 	int price; 
@@ -15,7 +15,7 @@ public class Member {
 	public Member(String memberName) {
 		this.memberName = memberName;
 		memberGrade = "SILVER"; //기본 등급
-		bonusRat = 0.01; // 포인트 1%적립
+		memeber_bonusRat = 0.01; // 포인트 1%적립
 	}
 	
 	
@@ -26,7 +26,7 @@ public class Member {
 
 
 	public int calPrice(int price) {
-		bonusPoint += price * bonusRat;
+		bonusPoint += price * memeber_bonusRat;
 		this.price = price;
 		return price;
 	}
@@ -79,13 +79,19 @@ public class Member {
 		this.memberGrade = memberGrade;
 	}
 
-	public double getBonusRat() {
-		return bonusRat;
+	
+
+	public double getMemeber_bonusRat() {
+		return memeber_bonusRat;
 	}
 
-	public void setBonusRat(double bonusRat) {
-		this.bonusRat = bonusRat;
+
+
+	public void setMemeber_bonusRat(double memeber_bonusRat) {
+		this.memeber_bonusRat = memeber_bonusRat;
 	}
+
+
 
 	public String getRole() {
 		return role;

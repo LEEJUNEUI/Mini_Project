@@ -14,7 +14,10 @@ public class WineDAO extends DAO {
 	}
 
 	public static WineDAO getInstance() {
-		return wineDao == null ? wineDao = new WineDAO() : wineDao;
+		if(wineDao == null) {
+			wineDao = new WineDAO();
+		}
+		return wineDao;
 	}
 
 	// 6) 와인 등록
@@ -22,16 +25,15 @@ public class WineDAO extends DAO {
 		int result = 0;
 		try {
 			conn();
-			String sql = "insert into product values (?,?,?,?,?,?,?)";
+			String sql = "insert into wine (wine_name,wine_price,wine_explain,country, varieties,type ) values (?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, wine.getWineName());
 			pstmt.setInt(2, wine.getWinePrice());
 			pstmt.setString(3, wine.getWineExplain());
-			pstmt.setInt(4, wine.getWineSales());
-			pstmt.setString(5, wine.getCountry());
-			pstmt.setString(6, wine.getVarieties());
-			pstmt.setString(7, wine.getType());
+			pstmt.setString(4, wine.getCountry());
+			pstmt.setString(5, wine.getVarieties());
+			pstmt.setString(6, wine.getType());
 
 			result = pstmt.executeUpdate();
 
@@ -49,7 +51,7 @@ public class WineDAO extends DAO {
 		Wine wine = null;
 		try {
 			conn();
-			String sql = "select country from wine";
+			String sql = "select wine_name,country from wine";
 			stmt = conn.createStatement();
 
 			rs = stmt.executeQuery(sql);
@@ -57,6 +59,7 @@ public class WineDAO extends DAO {
 			while (rs.next()) {
 				wine = new Wine();
 				wine.setCountry(rs.getString("country"));
+				wine.setWineName(rs.getString("wine_name"));
 				list.add(wine);
 			}
 		} catch (Exception e) {
@@ -73,14 +76,15 @@ public class WineDAO extends DAO {
 		Wine wine = null;
 		try {
 			conn();
-			String sql = "select varieties from wine";
+			String sql = "select wine_name,varieties from wine";
 			stmt = conn.createStatement();
 
 			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				wine = new Wine();
-				wine.setCountry(rs.getString("varieties"));
+				wine.setVarieties(rs.getString("varieties"));
+				wine.setWineName(rs.getString("wine_name"));
 				list.add(wine);
 			}
 		} catch (Exception e) {
@@ -97,14 +101,15 @@ public class WineDAO extends DAO {
 		Wine wine = null;
 		try {
 			conn();
-			String sql = "select type from wine";
+			String sql = "select wine_name,type from wine";
 			stmt = conn.createStatement();
 
 			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				wine = new Wine();
-				wine.setCountry(rs.getString("type"));
+				wine.setType(rs.getString("type"));
+				wine.setWineName(rs.getString("wine_name"));
 				list.add(wine);
 			}
 		} catch (Exception e) {
@@ -121,14 +126,15 @@ public class WineDAO extends DAO {
 		Wine wine = null;
 		try {
 			conn();
-			String sql = "select wine_price from wine";
+			String sql = "select wine_name,wine_price from wine";
 			stmt = conn.createStatement();
 
 			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				wine = new Wine();
-				wine.setCountry(rs.getString("price"));
+				wine.setWinePrice(rs.getInt("wine_price"));
+				wine.setWineName(rs.getString("wine_name"));
 				list.add(wine);
 			}
 		} catch (Exception e) {
@@ -191,13 +197,14 @@ public class WineDAO extends DAO {
 	}
 
 	// 9) 와인 수정
-	public int changeWine(int winePrice) {
+	public int changeWine(String wineName, int winePrice) {
 		int result = 0;
 		try {
 			conn();
-			String sql = "update wine set wine_price = ? where wine_name = ?";
+			String sql = "update wine set wine_price = ? where wine_name = ? " ;
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, winePrice);
+			pstmt.setString(2, wineName);
 			
 			result = pstmt.executeUpdate();
 			
@@ -208,26 +215,6 @@ public class WineDAO extends DAO {
 		}
 		return result;
 	}
-//	
-//	// 10 와인 매출
-//	public int calWine(String wineSales) {
-//		int result = 0;
-//		try {
-//			conn();
-//			String sql = "update wine set wine_Sales = wine_sales+1 where wine_name = ?";
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, wineSales);
-//			
-//			result = pstmt.executeUpdate();
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			disconnect();
-//		}
-//		return result;
-//
-//	}
 	
 
 	// 11) 와인 삭제

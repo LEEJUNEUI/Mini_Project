@@ -13,14 +13,12 @@ public class Application {
 
 	MemberService ms = new MemberService();
 	WineService ws = new WineService();
-	
-	
 
 	int menuNo = 0;
 
 	public Application() {
 		start();
-		
+
 	}
 
 	private void start() {
@@ -35,16 +33,27 @@ public class Application {
 
 			if (menuNo == 1) {
 				// 회원 조회
-				MemberManage.getInstance().getList(null);
+				System.out.println("| 1. 전체 조회 | 2. 단건 조회 |");
+				System.out.println("조회할 번호>");
+				menuNo = Integer.parseInt(scn.nextLine());
+
+				switch (menuNo) {
+				case 1:
+					ms.detailMemberList();
+					break;
+				case 2:
+					
+					break;
+				}
 			} else if (menuNo == 2) {
 				// 회원 등록
-				ms.registerCustomer();
+				ms.registerMember();
 			} else if (menuNo == 3) {
 				// 회원 수정
-				MemberManage.getInstance().updateGrade(null);
+				MemberManage.getInstance().updateGrade();
 			} else if (menuNo == 4) {
 				// 회원 삭제
-				MemberManage.getInstance().deleteMember(null);
+				MemberManage.getInstance().deleteMember();
 			} else if (menuNo == 5) {
 				// 와인 등록
 				ws.insertWine();
@@ -52,24 +61,32 @@ public class Application {
 				// 와인 조회
 				System.out.println("| 1.국가별 조회 | 2. 품종별 조회 | 3. 타입별 조회 | 4. 가격별 조회 | 5. 상세 조회 |");
 				System.out.println("조회할 번호>");
+				menuNo = Integer.parseInt(scn.nextLine());
+
 				switch (menuNo) {
+
 				case 1:
 					ws.getCountry();
+					break;
 				case 2:
 					ws.getVarieties();
+					break;
 				case 3:
 					ws.getType();
+					break;
 				case 4:
 					ws.getPrice();
+					break;
 				case 5:
 					ws.getDetailWine();
+					break;
 				}
 			} else if (menuNo == 7) {
 				// 와인 판매
 				ws.salesWine();
 			} else if (menuNo == 8) {
 				// 와인 수정
-				WineDAO.getInstance().changeWine(menuNo);
+				ws.changeWine();
 			} else if (menuNo == 9) {
 				// 와인 매출
 				ws.calWine();
@@ -82,6 +99,7 @@ public class Application {
 				System.out.println("프로그램 종료");
 				break;
 			}
+			break;
 		}
 	}
 }

@@ -10,6 +10,7 @@ public class WineService {
 	// 와인 등록
 	public void insertWine() {
 		Wine wine = new Wine();
+		int result = 0;
 
 		System.out.println("와인명>");
 		String wineName = scn.nextLine();
@@ -17,8 +18,6 @@ public class WineService {
 		int winePrice = Integer.parseInt(scn.nextLine());
 		System.out.println("와인설명>");
 		String wineExplain = scn.nextLine();
-		System.out.println("와인판매량>");
-		int wineSales = Integer.parseInt(scn.nextLine());
 		System.out.println("와인 생산지>");
 		String country = scn.nextLine();
 		System.out.println("와인 품종>");
@@ -29,12 +28,11 @@ public class WineService {
 		wine.setWineName(wineName);
 		wine.setWinePrice(winePrice);
 		wine.setWineExplain(wineExplain);
-		wine.setWineSales(wineSales);
 		wine.setCountry(country);
 		wine.setVarieties(varieties);
 		wine.setType(type);
 
-		int result = WineDAO.getInstance().insertWine(wine);
+		result = WineDAO.getInstance().insertWine(wine);
 
 		if (result == 1) {
 			System.out.println("등록 성공");
@@ -50,6 +48,7 @@ public class WineService {
 		for (Wine wine : list) {
 			System.out.println("===============================");
 			System.out.println("| 와인 생산지 : " + wine.getCountry() + " |");
+			System.out.println("| 와인 이름 : " + wine.getWineName() + " |");
 			System.out.println("===============================");
 		}
 	}
@@ -60,6 +59,7 @@ public class WineService {
 		for (Wine wine : list) {
 			System.out.println("===============================");
 			System.out.println("| 와인 품종 : " + wine.getVarieties() + " |");
+			System.out.println("| 와인 이름 : " + wine.getWineName() + " |");
 			System.out.println("===============================");
 		}
 	}
@@ -70,6 +70,7 @@ public class WineService {
 		for (Wine wine : list) {
 			System.out.println("===============================");
 			System.out.println("| 와인 종류  : " + wine.getType() + " |");
+			System.out.println("| 와인 이름 : " + wine.getWineName() + " |");
 			System.out.println("===============================");
 		}
 	}
@@ -80,6 +81,7 @@ public class WineService {
 		for (Wine wine : list) {
 			System.out.println("===============================");
 			System.out.println("| 와인 가격  : " + wine.getWinePrice() + " |");
+			System.out.println("| 와인 이름 : " + wine.getWineName() + " |");
 			System.out.println("===============================");
 		}
 	}
@@ -119,7 +121,8 @@ public class WineService {
 		String wineName = scn.nextLine();
 		System.out.println("와인 가격 수정>");
 		int winePrice = Integer.parseInt(scn.nextLine());
-		int result = WineDAO.getInstance().changeWine(winePrice);
+		
+		int result = WineDAO.getInstance().changeWine(wineName,winePrice);
 		if (result == 1) {
 			System.out.println("수정 완료");
 		} else {
@@ -154,5 +157,4 @@ public class WineService {
 			System.out.println("삭제 실패");
 		}
 	}
-
 }
