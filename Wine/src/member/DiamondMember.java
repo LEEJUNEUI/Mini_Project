@@ -5,7 +5,7 @@ public class DiamondMember extends Member{
 	
 	public DiamondMember() {
 		memberGrade = "Diamond"; //고객 등급 다이아
-		member_saleRat = 0.1; //다이아 할인율
+		member_saleRat = 0.05; //다이아 5% 할인율
 	}
 	
 	public int calPrice(int price) {

@@ -5,7 +5,7 @@ public class GoldMember extends Member{
 	
 	public GoldMember() {
 		memberGrade = "Gold"; //고객 등급 골드
-		member_saleRat = 0.05; //골드 5퍼 할인
+		member_saleRat = 0.03; //골드 3% 할인
 	}
 	
 	public int calPrice(int price) {
