@@ -36,7 +36,7 @@ public class MemberManage extends DAO {
 				member.setMemberName(rs.getString("member_name"));
 				member.setMemberTel(rs.getString("member_tel"));
 				member.setMemberGrade(rs.getString("member_grade"));
-				member.setMemeber_bonusRat(rs.getDouble("member_bonusRat"));
+				member.setMember_saleRat(rs.getDouble("member_saleRat"));
 				member.setRole(rs.getString("role"));
 
 			}
@@ -53,14 +53,14 @@ public class MemberManage extends DAO {
 		int result = 0;
 		try {
 			conn();
-			String sql = "insert into winemember (member_id,member_pw, member_name, member_tel,member_grade,member_bonusRat, role) values (?,?,?,?,?,?,?)";
+			String sql = "insert into winemember (member_id,member_pw, member_name, member_tel,member_grade,member_saleRat, role) values (?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPw());
 			pstmt.setString(3, member.getMemberName());
 			pstmt.setString(4, member.getMemberTel());
 			pstmt.setString(5, member.getMemberGrade());
-			pstmt.setDouble(6, member.getMemeber_bonusRat());
+			pstmt.setDouble(6, member.getMember_saleRat());
 			pstmt.setString(7, member.getRole());
 
 			result = pstmt.executeUpdate();
@@ -90,8 +90,7 @@ public class MemberManage extends DAO {
 				member.setMemberName(rs.getString("member_name"));
 				member.setMemberTel(rs.getString("member_tel"));
 				member.setMemberGrade(rs.getString("member_grade"));
-				member.setMemeber_bonusRat(rs.getDouble("member_bonusRat"));
-				member.setRole(rs.getString("role"));
+				member.setMember_saleRat(rs.getDouble("member_saleRat"));
 				list.add(member);
 			}
 		} catch (Exception e) {
@@ -103,25 +102,28 @@ public class MemberManage extends DAO {
 	}
 
 	// 이름 조회
-	public List<Member> getMemberList() {
+	public List<Member> getMemberList(String name) {
 		List<Member> list = new ArrayList<>();
 		Member member = null;
 		try {
 			conn();
-			String sql = "SELECT member_name from winemember";
-			stmt = conn.createStatement();
+			String sql = "SELECT member_id,member_pw,member_name,member_tel,"
+					+ "member_grade,member_saleRat from winemember "
+					+ "where member_name like ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%"+ name +"%");
+			
 
-			rs = stmt.executeQuery(sql);
+			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				member = new Member();
 				member.setMemberId(rs.getString("member_id"));
 				member.setMemberPw(rs.getString("member_pw"));
 				member.setMemberName(rs.getString("member_name"));
 				member.setMemberTel(rs.getString("member_tel"));
 				member.setMemberGrade(rs.getString("member_grade"));
-				member.setMemeber_bonusRat(rs.getDouble("member_bonusRat"));
-				member.setRole(rs.getString("role"));
+				member.setMember_saleRat(rs.getDouble("member_saleRat"));
 				list.add(member);
 			}
 		} catch (Exception e) {
@@ -133,25 +135,22 @@ public class MemberManage extends DAO {
 	}
 
 	// 등급 조회
-	public List<Member> getMemberGrade() {
+	public List<Member> getMemberGrade(String grade) {
 		List<Member> list = new ArrayList<>();
 		Member member = null;
 		try {
 			conn();
-			String sql = "SELECT member_name from winemember";
-			stmt = conn.createStatement();
+			String sql = "SELECT member_name,member_grade,member_saleRat from winemember where member_name like ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" +grade+ "%");
 
-			rs = stmt.executeQuery(sql);
+			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				member = new Member();
-				member.setMemberId(rs.getString("member_id"));
-				member.setMemberPw(rs.getString("member_pw"));
 				member.setMemberName(rs.getString("member_name"));
-				member.setMemberTel(rs.getString("member_tel"));
 				member.setMemberGrade(rs.getString("member_grade"));
-				member.setMemeber_bonusRat(rs.getDouble("member_bonusRat"));
-				member.setRole(rs.getString("role"));
+				member.setMember_saleRat(rs.getDouble("member_saleRat"));
 				list.add(member);
 			}
 		} catch (Exception e) {
@@ -163,44 +162,45 @@ public class MemberManage extends DAO {
 	}
 
 	// 회원 등급 변경
-	public int updateGrade() {
-		int result = 0;
-		try {
-			conn();
-			String sql = "UPDATE wineMember set memeber_grade = ? where member_id = ? ";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, rs.getString("member_grade"));
-
-			result = pstmt.executeUpdate();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			disconnect();
-		}
-		return result;
-	}
+	//회원 수정
+	   public int updateGrade(Member member) {
+	      int result = 0;
+	      try {
+	         conn();
+	         String sql = "update winemember set member_grade = ? , member_saleRat = ?  where member_id = ?";
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, member.getMemberGrade());
+	         pstmt.setDouble(2, member.getMember_saleRat());
+	         pstmt.setString(3, member.getMemberId());
+	         
+	         
+	         result = pstmt.executeUpdate();
+	            
+	      } catch(Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         disconnect();
+	      }
+	      return result;
+	   }
 
 	// 회원 삭제
-	public int deleteMember() {
-		int result = 0;
-		try {
-			conn();
-			String sql = "delete from wineMember where member_id = ? ";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, rs.getString("member_id"));
-			result = pstmt.executeUpdate();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			disconnect();
-		}
-		return result;
-	}
-
-	public String getMemberGrade() {
-		return null;
-	}
+	   public int deleteMember(String memberId) {
+	      int result = 0;
+	      try {
+	         conn();
+	         String sql = "delete from winemember where member_id = ?";
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, memberId);
+	         
+	         result = pstmt.executeUpdate();
+	         
+	      } catch(Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         disconnect();
+	      }
+	      return result;
+	   }
 
 }

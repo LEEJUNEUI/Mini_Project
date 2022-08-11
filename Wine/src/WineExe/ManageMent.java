@@ -2,10 +2,9 @@ package WineExe;
 
 import java.util.Scanner;
 
-import Wine.WineDAO;
 import Wine.WineService;
-import member.MemberManage;
 import member.MemberService;
+import reservation.RsService;
 
 public class ManageMent {
 
@@ -13,6 +12,7 @@ public class ManageMent {
 
 	MemberService ms = new MemberService();
 	WineService ws = new WineService();
+	RsService rs = new RsService();
 
 	int menuNo = 0;
 
@@ -24,7 +24,7 @@ public class ManageMent {
 
 	private void WineBar() {
 		while (true) {
-			if (MemberService.memberInfo.getRole().equals("1")) {
+			{
 				menuInfo();
 			}
 		}
@@ -53,12 +53,10 @@ public class ManageMent {
 						menuNo = Integer.parseInt(scn.nextLine());
 						switch (menuNo) {
 						case 1:
-							System.out.println("회원 전체 조회");
 							ms.detailMemberList();
 							break;
 						case 2:
-							System.out.println("회원 단건 조회");
-
+							ms.MemberList();
 							break;
 						}
 					} else if (menuNo == 2) {
@@ -66,10 +64,10 @@ public class ManageMent {
 						ms.registerMember();
 					} else if (menuNo == 3) {
 						// 회원 수정
-						MemberManage.getInstance().updateGrade();
+						ms.updateGrade();
 					} else if (menuNo == 4) {
 						// 회원 삭제
-						MemberManage.getInstance().deleteMember();
+						ms.DeleteMember();
 					}
 					break;
 				case 2:
@@ -116,9 +114,25 @@ public class ManageMent {
 					}
 					break;
 				case 3:
-					System.out.println("| 1. 예약 조회 | 2. 예약 등록 | 3. 예약 변경 | 4. 시간표 변경");
+					System.out.println("| 1. 예약 조회 | 2. 예약 등록 | 3. 예약 취소 | 4. 종료 |");
 					System.out.println("입력>");
 					menuNo = Integer.parseInt(scn.nextLine());
+					if (menuNo == 1) {
+						// 예약 조회
+						rs.RsMemberList();
+						
+					} else if (menuNo == 2) {
+						// 예약 등록
+						rs.registerRsMember();
+
+					} else if (menuNo == 3) {
+						// 예약 취소
+						rs.DeleteReserve();
+					}  else if (menuNo == 4) {
+						// 프로그램 종료
+						System.out.println("프로그램 종료");
+						break;
+					}
 					break;
 				case 4:
 					System.out.println("프로그램 종료");
@@ -134,26 +148,20 @@ public class ManageMent {
 				System.out.println("| 1.국가별 조회 | 2. 품종별 조회 | 3. 타입별 조회 | 4. 가격별 조회 | 5. 상세 조회 |");
 				System.out.println("조회할 번호>");
 				menuNo = Integer.parseInt(scn.nextLine());
-				switch (menuNo) {
-				case 1:
+				if (menuNo == 1) {
 					ws.getCountry();
-					break;
-				case 2:
+				} else if (menuNo == 2) {
 					ws.getVarieties();
-					break;
-				case 3:
+				} else if (menuNo == 3) {
 					ws.getType();
-					break;
-				case 4:
+				} else if (menuNo == 4) {
 					ws.getPrice();
-					break;
-				case 5:
+				} else if (menuNo == 5) {
 					ws.getDetailWine();
-					break;
 				}
 				break;
 			case 2:
-				System.out.println("고객님의 등급은 " + MemberManage.getInstance().getMemberGrade() + "입니다.");
+				ms.MemberGrade();
 				break;
 
 			}
