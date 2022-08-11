@@ -107,6 +107,16 @@ public class WineService {
 
 		System.out.println("메뉴 입력> ");
 		String wineName = scn.nextLine();
+		//select 사람의 등급 조회 -> 
+		//등급별 if 생성(각 등급에 맞게)
+		// 다이아 -> DiamondMember 객체 생성
+		// 실버 -> 
+		
+		
+		
+		
+		
+		
 		int result = WineDAO.getInstance().getSalesWine(wineName);
 		if (result == 1) {
 			System.out.println("판매 완료");
