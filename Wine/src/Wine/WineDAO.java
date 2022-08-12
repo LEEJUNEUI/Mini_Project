@@ -1,9 +1,11 @@
 package Wine;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import common.DAO;
+import member.MemberManage;
 
 public class WineDAO extends DAO {
 
@@ -14,7 +16,7 @@ public class WineDAO extends DAO {
 	}
 
 	public static WineDAO getInstance() {
-		if(wineDao == null) {
+		if (wineDao == null) {
 			wineDao = new WineDAO();
 		}
 		return wineDao;
@@ -25,7 +27,7 @@ public class WineDAO extends DAO {
 		int result = 0;
 		try {
 			conn();
-			String sql = "insert into wine (wine_name,wine_price,wine_explain,country, varieties,type ) values (?,?,?,?,?,?)";
+			String sql = "insert into wine  values (?,?,?,?,?,?,wine_no_seq.nextval)";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, wine.getWineName());
@@ -149,6 +151,8 @@ public class WineDAO extends DAO {
 	public List<Wine> getDetailWine() {
 		List<Wine> list = new ArrayList<>();
 		Wine wine = null;
+		ResultSet rs2 = null;
+
 		try {
 			conn();
 			String sql = "select * from wine";
@@ -161,10 +165,18 @@ public class WineDAO extends DAO {
 				wine.setWineName(rs.getString("wine_name"));
 				wine.setWinePrice(rs.getInt("wine_price"));
 				wine.setWineExplain(rs.getString("wine_explain"));
-				wine.setWineSales(rs.getInt("wine_sales"));
 				wine.setCountry(rs.getString("country"));
 				wine.setVarieties(rs.getString("varieties"));
 				wine.setType(rs.getString("type"));
+				int sales = 0;
+				String sql1 = "select sum(wine_sales) sum from wineorder group by wine_num having wine_num = ?";
+				pstmt = conn.prepareStatement(sql1);
+				pstmt.setInt(1, rs.getInt("wine_num"));
+				rs2 = pstmt.executeQuery();
+				if (rs2.next()) {
+					sales = rs2.getInt("sum");
+				}
+				wine.setWineSales(sales);
 				list.add(wine);
 			}
 		} catch (Exception e) {
@@ -177,18 +189,37 @@ public class WineDAO extends DAO {
 	}
 
 	// 8) 와인 판매
-	public int getSalesWine(String wineName) {
+	public int getSalesWine(String wineName, int wines) {
 		int result = 0;
+		int originalWinePrice = 0;
+		double winePrice = 0;
+		int wineNum = 0;
 		try {
 			conn();
-			String sql = "update wine set wine_Sales = wine_sales+1 where wine_name = ?";
-			pstmt = conn.prepareStatement(sql);
+			String sql1 = "select wine_price,wine_num from wine where wine_name = ?";
+			pstmt = conn.prepareStatement(sql1);
 			pstmt.setString(1, wineName);
-			
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				originalWinePrice = rs.getInt("wine_price");
+				wineNum = rs.getInt("wine_num");
+			}
+
+			winePrice = (1 - MemberManage.mem.getMember_saleRat()) * originalWinePrice;
+
+			String sql2 = "insert into wineorder values(?,?,?,?,?,?)";
+			pstmt = conn.prepareStatement(sql2);
+			pstmt.setInt(1, wineNum);
+			pstmt.setString(2, MemberManage.mem.getMemberName());
+			pstmt.setDouble(3, winePrice * wines);
+			pstmt.setInt(4, wines);
+			pstmt.setInt(5, originalWinePrice * wines);
+			pstmt.setDouble(6, MemberManage.mem.getMember_saleRat() * originalWinePrice * wines);
 			result = pstmt.executeUpdate();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("없는 와인입니다.");
 		} finally {
 			disconnect();
 		}
@@ -201,31 +232,34 @@ public class WineDAO extends DAO {
 		int result = 0;
 		try {
 			conn();
-			String sql = "update wine set wine_price = ? where wine_name = ? " ;
+			String sql = "update wine set wine_price = ? where wine_name = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, winePrice);
 			pstmt.setString(2, wineName);
-			
+
 			result = pstmt.executeUpdate();
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			disconnect();
 		}
 		return result;
 	}
-	
 
 	// 11) 와인 삭제
 	public int deleteWine(String wineName) {
 		int result = 0;
 		try {
 			conn();
+			String sql1 = "delete from wineorder where wine_num = (select wine_num from wine where wine_name = ?)";
+			pstmt = conn.prepareStatement(sql1);
+			pstmt.setString(1, wineName);
+			result = pstmt.executeUpdate();
+
 			String sql = "delete from wine where wine_name = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, wineName);
-
 			result = pstmt.executeUpdate();
 
 		} catch (Exception e) {

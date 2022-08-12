@@ -9,24 +9,35 @@ public class MemberService {
 
 	Scanner scn = new Scanner(System.in);
 
+	int menuNo = 0;
+
 	// 로그인
 	public void doLogin() {
 		Member member = null;
 
-		System.out.println("ID>");
+		System.out.println("|1. 로그인 | 2. 종료 |");
+		menuNo = Integer.parseInt(scn.nextLine());
+		switch (menuNo) {
+		case 1:
+			System.out.println("ID>");
 
-		String id = scn.nextLine();
+			String id = scn.nextLine();
 
-		System.out.println("PW>");
+			System.out.println("PW>");
 
-		String pw = scn.nextLine();
+			String pw = scn.nextLine();
 
-		member = MemberManage.getInstance().loginInfo(id);
+			member = MemberManage.getInstance().loginInfo(id);
 
-		if (member.getMemberPw().equals(pw)) {
-			memberInfo = member;
-		} else {
-			System.out.println("로그인 실패");
+			if (MemberManage.mem.getMemberPw().equals(pw)) {
+				memberInfo = MemberManage.mem;
+			}
+			break;
+		case 2:
+			System.out.println("===========");
+			System.out.println("|프로그램 종료|");
+			System.out.println("===========");
+			break;
 		}
 	}
 
@@ -46,12 +57,12 @@ public class MemberService {
 		String pw = scn.nextLine();
 		System.out.println("고객 이름>");
 		String name = scn.nextLine();
-		System.out.println("고객 번호>");
+		System.out.println("고객 전화번호>");
 		String tel = scn.nextLine();
 		System.out.println("고객 등급>");
 		String grade = scn.nextLine();
 		System.out.println("고객 할인율>");
-		double saleRat = scn.nextDouble();
+		double saleRat = Double.parseDouble(scn.nextLine());
 
 		member.setMemberId(id);
 		member.setMemberPw(pw);
@@ -89,7 +100,7 @@ public class MemberService {
 	public void MemberList() {
 		System.out.println("회원 단건 조회");
 		System.out.println("회원 이름>");
-		String name = scn.nextLine();
+		String name = scn.next();
 
 		List<Member> list = MemberManage.getInstance().getMemberList(name);
 		for (Member member : list) {
@@ -107,7 +118,7 @@ public class MemberService {
 	public void MemberGrade() {
 		System.out.println("회원 등급 조회");
 		System.out.println("회원 이름>");
-		String grade = scn.nextLine();
+		String grade = scn.next();
 
 		List<Member> list = MemberManage.getInstance().getMemberGrade(grade);
 		for (Member member : list) {
@@ -127,7 +138,7 @@ public class MemberService {
 		String memberGrade = scn.nextLine();
 
 		System.out.println("할인율 변경 : ");
-		Double saleRat = scn.nextDouble();
+		double saleRat = Double.parseDouble(scn.nextLine());
 
 		member.setMemberId(memberId);
 		member.setMemberGrade(memberGrade);

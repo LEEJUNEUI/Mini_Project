@@ -8,29 +8,10 @@ public class Member {
 	protected String memberTel; // 회원 전화번호
 	protected String memberGrade; // 회원 등급
 	protected double member_saleRat; // 할인율
-	protected int purchase; // 구매금액
 	protected String role; // 권한 1 : 관리자, 0 : 사용자
 	protected int price;
 
-	public Member(String memberName) {
-		this.memberName = memberName;
-		memberGrade = "SILVER"; // 기본 등급
-		member_saleRat = 0.01; // 1% 할인
-	}
-
 	public Member() {
-	}
-
-	public int calPrice(int price) {
-		return price-(int)(price*member_saleRat);
-	}
-
-	public void showMemberInfo() {
-		System.out.println(memberName + " 님의 등급은 " + memberGrade + "이며, 할인율은 " + member_saleRat + "입니다.");
-	}
-
-	public void showStatement() {
-		System.out.println(memberName + " 님의 등급은 " + memberGrade + "이며, 지불해야 하는 금액은 " + price + "입니다.");
 	}
 
 	public String getMemberId() {
@@ -95,14 +76,6 @@ public class Member {
 
 	public void setPrice(int price) {
 		this.price = price;
-	}
-
-	public int getPurchase() {
-		return purchase;
-	}
-
-	public void setPurchase(int purchase) {
-		this.purchase = purchase;
 	}
 
 }

@@ -1,10 +1,6 @@
 package WineExe;
 
 import java.util.Scanner;
-
-import Wine.WineDAO;
-import Wine.WineService;
-import member.MemberManage;
 import member.MemberService;
 
 public class Application {
@@ -18,9 +14,6 @@ public class Application {
 	}
 
 	private void start() {
-		ms.doLogin();
-		if (MemberService.memberInfo != null) {
-			new ManageMent();
-		}
+		new ManageMent();
 	}
 }

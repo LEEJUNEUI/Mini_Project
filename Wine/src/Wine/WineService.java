@@ -14,9 +14,9 @@ public class WineService {
 
 		System.out.println("와인명>");
 		String wineName = scn.nextLine();
-		System.out.println("와인가격>");
+		System.out.println("와인 가격>");
 		int winePrice = Integer.parseInt(scn.nextLine());
-		System.out.println("와인설명>");
+		System.out.println("와인 설명>");
 		String wineExplain = scn.nextLine();
 		System.out.println("와인 생산지>");
 		String country = scn.nextLine();
@@ -24,7 +24,7 @@ public class WineService {
 		String varieties = scn.nextLine();
 		System.out.println("와인 종류>");
 		String type = scn.nextLine();
-
+		
 		wine.setWineName(wineName);
 		wine.setWinePrice(winePrice);
 		wine.setWineExplain(wineExplain);
@@ -91,13 +91,14 @@ public class WineService {
 		List<Wine> list = WineDAO.getInstance().getDetailWine();
 		for (Wine wine : list) {
 			System.out.println("*****************************");
-			System.out.println("와인 이름> " + wine.getWineName() + " *");
-			System.out.println("와인 가격 > " + wine.getWinePrice() + " *");
-			System.out.println("와인 설명> " + wine.getWineExplain() + " *");
-			System.out.println("와인 판매량> " + wine.getWineSales() + " *");
-			System.out.println("와인 생산지> " + wine.getCountry() + " *");
-			System.out.println("와인 품종> " + wine.getVarieties() + " *");
-			System.out.println("와인 종류> " + wine.getType() + " *");
+			System.out.println("와인 이름> " + wine.getWineName());
+			System.out.println("와인 가격 > " + wine.getWinePrice());
+			System.out.println("와인 설명> " + wine.getWineExplain());
+			System.out.println("와인 판매량> " + wine.getWineSales());
+			System.out.println("와인 생산지> " + wine.getCountry());
+			System.out.println("와인 품종> " + wine.getVarieties());
+			System.out.println("와인 종류> " + wine.getType());
+			
 			System.out.println("*****************************");
 		}
 	}
@@ -107,17 +108,10 @@ public class WineService {
 
 		System.out.println("메뉴 입력> ");
 		String wineName = scn.nextLine();
-		//select 사람의 등급 조회 -> 
-		//등급별 if 생성(각 등급에 맞게)
-		// 다이아 -> DiamondMember 객체 생성
-		// 실버 -> 
+		System.out.println("수량 입력>");
+		int wines = Integer.parseInt(scn.nextLine());
 		
-		
-		
-		
-		
-		
-		int result = WineDAO.getInstance().getSalesWine(wineName);
+		int result = WineDAO.getInstance().getSalesWine(wineName, wines);
 		if (result == 1) {
 			System.out.println("판매 완료");
 		} else {
@@ -131,8 +125,8 @@ public class WineService {
 		String wineName = scn.nextLine();
 		System.out.println("와인 가격 수정>");
 		int winePrice = Integer.parseInt(scn.nextLine());
-		
-		int result = WineDAO.getInstance().changeWine(wineName,winePrice);
+
+		int result = WineDAO.getInstance().changeWine(wineName, winePrice);
 		if (result == 1) {
 			System.out.println("수정 완료");
 		} else {

@@ -6,7 +6,7 @@ import java.util.List;
 import common.DAO;
 
 public class MemberManage extends DAO {
-
+	public static Member mem = null;
 	// 싱글톤
 	private static MemberManage mm = new MemberManage();
 
@@ -20,7 +20,6 @@ public class MemberManage extends DAO {
 
 	// 로그인 메소드
 	public Member loginInfo(String id) {
-		Member member = null;
 		try {
 			conn();
 			String sql = "select * from winemember where member_id = ?";
@@ -30,14 +29,14 @@ public class MemberManage extends DAO {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				member = new Member();
-				member.setMemberId(rs.getString("member_id"));
-				member.setMemberPw(rs.getString("member_pw"));
-				member.setMemberName(rs.getString("member_name"));
-				member.setMemberTel(rs.getString("member_tel"));
-				member.setMemberGrade(rs.getString("member_grade"));
-				member.setMember_saleRat(rs.getDouble("member_saleRat"));
-				member.setRole(rs.getString("role"));
+				mem = new Member();
+				mem.setMemberId(rs.getString("member_id"));
+				mem.setMemberPw(rs.getString("member_pw"));
+				mem.setMemberName(rs.getString("member_name"));
+				mem.setMemberTel(rs.getString("member_tel"));
+				mem.setMemberGrade(rs.getString("member_grade"));
+				mem.setMember_saleRat(rs.getDouble("member_saleRat"));
+				mem.setRole(rs.getString("role"));
 
 			}
 		} catch (Exception e) {
@@ -45,7 +44,7 @@ public class MemberManage extends DAO {
 		} finally {
 			disconnect();
 		}
-		return member;
+		return mem;
 	}
 
 	// 회원 등록 메소드
@@ -91,6 +90,7 @@ public class MemberManage extends DAO {
 				member.setMemberTel(rs.getString("member_tel"));
 				member.setMemberGrade(rs.getString("member_grade"));
 				member.setMember_saleRat(rs.getDouble("member_saleRat"));
+				
 				list.add(member);
 			}
 		} catch (Exception e) {
@@ -108,11 +108,9 @@ public class MemberManage extends DAO {
 		try {
 			conn();
 			String sql = "SELECT member_id,member_pw,member_name,member_tel,"
-					+ "member_grade,member_saleRat from winemember "
-					+ "where member_name like ?";
+					+ "member_grade,member_saleRat from winemember " + "where member_name like ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, "%"+ name +"%");
-			
+			pstmt.setString(1, "%" + name + "%");
 
 			rs = pstmt.executeQuery();
 
@@ -142,7 +140,7 @@ public class MemberManage extends DAO {
 			conn();
 			String sql = "SELECT member_name,member_grade,member_saleRat from winemember where member_name like ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, "%" +grade+ "%");
+			pstmt.setString(1, "%" + grade + "%");
 
 			rs = pstmt.executeQuery();
 
@@ -162,45 +160,44 @@ public class MemberManage extends DAO {
 	}
 
 	// 회원 등급 변경
-	//회원 수정
-	   public int updateGrade(Member member) {
-	      int result = 0;
-	      try {
-	         conn();
-	         String sql = "update winemember set member_grade = ? , member_saleRat = ?  where member_id = ?";
-	         pstmt = conn.prepareStatement(sql);
-	         pstmt.setString(1, member.getMemberGrade());
-	         pstmt.setDouble(2, member.getMember_saleRat());
-	         pstmt.setString(3, member.getMemberId());
-	         
-	         
-	         result = pstmt.executeUpdate();
-	            
-	      } catch(Exception e) {
-	         e.printStackTrace();
-	      } finally {
-	         disconnect();
-	      }
-	      return result;
-	   }
+	// 회원 수정
+	public int updateGrade(Member member) {
+		int result = 0;
+		try {
+			conn();
+			String sql = "update winemember set member_grade = ? , member_saleRat = ?  where member_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMemberGrade());
+			pstmt.setDouble(2, member.getMember_saleRat());
+			pstmt.setString(3, member.getMemberId());
+
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return result;
+	}
 
 	// 회원 삭제
-	   public int deleteMember(String memberId) {
-	      int result = 0;
-	      try {
-	         conn();
-	         String sql = "delete from winemember where member_id = ?";
-	         pstmt = conn.prepareStatement(sql);
-	         pstmt.setString(1, memberId);
-	         
-	         result = pstmt.executeUpdate();
-	         
-	      } catch(Exception e) {
-	         e.printStackTrace();
-	      } finally {
-	         disconnect();
-	      }
-	      return result;
-	   }
+	public int deleteMember(String memberId) {
+		int result = 0;
+		try {
+			conn();
+			String sql = "delete from winemember where member_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return result;
+	}
 
 }
